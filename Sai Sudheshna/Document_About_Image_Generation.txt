@@ -1,0 +1,37 @@
+            Sustainable Smart City Assistant – A Text-to-Image Generator using Hugging Face APIs
+Objective:
+        The aim of this project is to design an AI-powered assistant that converts natural language 
+descriptions into realistic images representing sustainable smart city concepts. 
+The assistant aids urban planners, researchers, students, and educators to visualize futuristic 
+eco-friendly infrastructure ideas.
+
+Component	         Description
+Streamlit:           Python framework for building and deploying web apps
+Hugging Face API:	 Used to access hosted image generation models without local setup
+Model Used:	         black-forest-labs/FLUX.1-dev – High-performance SDXL-based diffusion model
+Python Libraries:	 requests, PIL, io, base64, json, datetime
+
+Key Functionalities:
+1. 🧾 Prompt-Based Image Generation
+Accepts user input as text (e.g., “Solar-powered smart homes with green rooftops”).
+
+Sends the input to the Hugging Face model API.
+
+Displays the generated image in the web interface.
+
+2. 🖼️ Display & Download Image
+Shows the generated image in the main interface.
+
+Includes a Download button to save the image locally as PNG.
+
+3. 💬 Chat History Logging
+Maintains a log of prompts and corresponding images.
+
+Saves images as base64 in session for re-display and exporting.
+
+4. 📜 History Export as JSON
+Option to export the entire prompt-image chat history in .json format for record keeping.
+
+5. 🔑 API Token Configuration
+Secure field for entering Hugging Face API key.
+Session state stores the token for reuse across app sessions.
