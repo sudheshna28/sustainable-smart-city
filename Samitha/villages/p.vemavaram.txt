@@ -1,0 +1,13 @@
+Village Name: P. Vemavaram
+Population: 2400
+Electricity Access: Full
+Water Source: Handpumps and borewells
+Sewage System: Open drains
+Internet: Available but slow
+Healthcare: PHC 3 km away
+Education: Primary school in village
+Transport: Limited bus services, no railway access
+Employment: Agriculture and daily wage labor
+Energy: Solar street lights installed in 2023
+Waste Management: Open dumping, compost pits introduced
+Sustainability Efforts: Promoted kitchen waste composting and LED usage

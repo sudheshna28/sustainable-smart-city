@@ -1,0 +1,13 @@
+Village Name: Unduru
+Population: 4200
+Electricity Access: Full
+Water Source: Piped water supply
+Sewage System: Semi-covered drains
+Internet: 4G access
+Healthcare: 1 PHC and weekly doctor visits
+Education: School till Class 10 + digital learning center
+Transport: State bus service, local auto network
+Employment: Farming, tailoring, and local businesses
+Energy: LED streetlights, solar rooftops
+Waste Management: Household waste segregation started
+Sustainability Efforts: Rainwater harvesting, LED campaign, digital literacy

@@ -1,0 +1,13 @@
+Village Name: Atchampeta
+Population: 1900
+Electricity Access: Partial
+Water Source: Open wells
+Sewage System: No structured system
+Internet: Limited
+Healthcare: Weekly mobile medical van
+Education: Primary school
+Transport: No public transport, only private vehicles
+Employment: Daily wage labor
+Energy: Few solar lamps distributed to households
+Waste Management: Dump yard on village outskirts
+Sustainability Efforts: Swachh Bharat initiatives, tree plantation drives

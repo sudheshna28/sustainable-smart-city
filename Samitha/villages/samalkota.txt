@@ -1,0 +1,13 @@
+Village Name: Samalkota
+Population: 27,000
+Electricity Access: Full
+Water Source: Borewell + municipal water
+Sewage System: Closed drainage
+Internet: Broadband and mobile internet
+Healthcare: PHC, private clinics
+Education: Multiple schools, junior college
+Transport: Railway station, bus depot
+Employment: Market trading, agriculture, services
+Energy: Rooftop solar panels in schools
+Waste Management: Segregated waste collection started
+Sustainability Efforts: Plastic-free market zones
