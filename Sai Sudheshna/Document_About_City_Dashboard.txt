@@ -1,0 +1,43 @@
+                        Technical Documentation & Functionality Report
+Overview:
+        The City Health Dashboard represents a core functionality of the Sustainable Smart City Assistant, 
+designed to provide real-time monitoring and visualization of critical urban environmental and infrastructure metrics for Kakinada city. 
+This web-based dashboard serves as a centralized platform for city administrators, environmental officials, and citizens to track key 
+sustainability indicators.
+
+Purpose and Objectives:
+        The dashboard addresses the growing need for transparent, data-driven urban management by providing 
+comprehensive visibility into four critical areas of city health: 
+air quality, water consumption, electricity usage, and waste generation. By consolidating 
+these metrics into a single interface, the system enables informed decision-making for sustainable 
+urban planning and resource management.
+
+Core Functionality
+1)Real-Time Monitoring Capabilities:
+The dashboard continuously tracks and displays current-day values for four essential city health 
+indicators through prominently featured Key Performance Indicator (KPI) cards. These metrics provide 
+immediate situational awareness of the city's environmental status and resource consumption patterns.
+2)Historical Trend Analysis:
+A sophisticated interactive visualization system presents seven-day historical trends for all monitored 
+parameters. The multi-line chart employs color-coded series to distinguish between different metrics, 
+enabling users to identify patterns, correlations, and anomalies across various city systems simultaneously.
+
+
+Monitored Parameters:
+1)Air Quality Index (AQI)
+Tracks atmospheric quality conditions with values ranging from 50-150 in the current simulation, 
+providing critical information for public health advisories and environmental policy decisions.
+2)Water Usage Monitoring
+Measures daily municipal water consumption in liters (range: 100,000-200,000L), 
+enabling water resource management, conservation planning, and infrastructure capacity assessment.
+3)Electricity Consumption Tracking
+Monitors daily power usage in kilowatt-hours (range: 5,000-10,000 kWh), supporting energy efficiency 
+initiatives, grid management, and renewable energy integration planning.
+4)Waste Generation Analysis
+Quantifies daily solid waste production in tons (range: 20-50 tons), facilitating waste management 
+optimization, recycling program effectiveness, and environmental impact assessment.
+
+Technical Specifications
+Platform: Streamlit web application
+Visualization: Altair charting library
+Layout: Responsive multi-column design

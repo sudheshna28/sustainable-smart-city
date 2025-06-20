@@ -1,3 +1,4 @@
-Sustainable Smart City Assistant 
+                                           Sustainable Smart City Assistant 
 Problem Statement:
-   Citizens in growing urban areas face challenges related to sustainability, such as inefficient recycling, rising pollution, and uneven city development .They often lack access to real-time environmental data and clear comparisons across cities .This gap limits their ability to make informed decisions and contribute effectively to sustainable living.
+   Citizens in growing urban areas face challenges related to sustainability, such as inefficient recycling, rising pollution, and uneven city development .
+They often lack access to real-time environmental data and clear comparisons across cities .This gap limits their ability to make informed decisions and contribute effectively to sustainable living.
