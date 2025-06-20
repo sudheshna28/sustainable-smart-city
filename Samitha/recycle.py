@@ -6,7 +6,7 @@ warnings.filterwarnings("ignore")
 def setup_granite_model_hf(model_name: str = "ibm-granite/granite-3.0-2b-instruct", use_auth_token: bool = False):
     print(f"🤖 Loading {model_name} from Hugging Face...")
 
-    auth_token = "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"
+    auth_token =  None
     if use_auth_token:
         import os
         auth_token = os.getenv("HUGGINGFACE_TOKEN", auth_token)
