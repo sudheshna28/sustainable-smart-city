@@ -1,13 +1,39 @@
 Village Name: P. Vemavaram
 Population: 2400
-Electricity Access: Full
-Water Source: Handpumps and borewells
-Sewage System: Open drains
-Internet: Available but slow
-Healthcare: PHC 3 km away
-Education: Primary school in village
-Transport: Limited bus services, no railway access
-Employment: Agriculture and daily wage labor
-Energy: Solar street lights installed in 2023
-Waste Management: Open dumping, compost pits introduced
-Sustainability Efforts: Promoted kitchen waste composting and LED usage
+
+Infrastructure:
+- The village has full electricity coverage, ensuring basic power availability in all households.
+- Drinking water is sourced from handpumps and borewells, with no central piped water system or treatment mechanism.
+- Sewage is carried through open roadside drains, increasing the risk of contamination and mosquito-borne diseases.
+- Internet connectivity is available via mobile networks but is slow and often unreliable, especially during bad weather or peak hours.
+- Public transport is minimal, with a few buses running to the nearby town. There is no access to railway services or private transport providers.
+
+Healthcare:
+- The village lacks a dedicated health facility. The nearest Primary Health Centre (PHC) is located 3 km away, requiring travel for even minor medical needs.
+- No emergency care or maternal health services are available within the village.
+
+Education:
+- A government primary school serves students up to the 5th class.
+- Students must travel to nearby areas for middle and high school education, which is a barrier for many families.
+
+Employment:
+- Agriculture is the primary source of income, including paddy and sugarcane cultivation.
+- Many residents work as daily wage laborers in fields or local construction jobs.
+- Limited job diversity leads to seasonal underemployment and migration.
+
+Renewable Energy:
+- Solar-powered street lights were installed in 2023, improving nighttime safety and reducing electricity costs.
+- Some interest in expanding solar solutions exists through community awareness.
+
+Digital Access:
+- Mobile phone usage is common, but digital services such as e-learning or telemedicine remain underutilized due to low bandwidth and lack of digital skills.
+
+Waste Management:
+- Household waste is mostly dumped in open spaces.
+- Recently, compost pits have been introduced to manage organic kitchen waste.
+- Awareness about waste segregation is low, but pilot programs are ongoing.
+
+Sustainability Efforts:
+- Villagers have been encouraged to compost kitchen waste and reduce landfill pressure.
+- LED bulbs have been promoted through government energy efficiency campaigns.
+- School-based campaigns promote environmental conservation and responsible energy usage.

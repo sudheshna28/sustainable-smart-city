@@ -1,13 +1,42 @@
-Village Name: Rajahmundry
-Population: 4 lakh (urban)
-Electricity Access: Full with smart grid pilot
-Water Source: Godavari River treatment
-Sewage System: Sewage treatment plants
-Internet: Fiber internet
-Healthcare: Govt + Private multispecialty
-Education: Educational hub, technical institutes
-Transport: Railway junction, airport access, RTC buses
-Employment: Services, education, textile business
-Energy: Hydroelectric and solar combo project
-Waste Management: Waste-to-energy initiative in progress
-Sustainability Efforts: Plastic recycling units, LED retrofitting
+City Name: Rajahmundry
+Population: Approximately 4,00,000 (urban)
+
+Infrastructure:
+- The city has full electricity coverage, and a smart grid pilot project is underway to optimize energy distribution and reduce outages.
+- Drinking water is sourced from the Godavari River, filtered and treated through a municipal purification system before being piped to households and businesses.
+- Rajahmundry has a comprehensive underground sewage network connected to multiple sewage treatment plants, reducing river and groundwater contamination.
+- High-speed fiber internet is widely available, supporting homes, offices, educational institutions, and public Wi-Fi in key areas.
+- Transport infrastructure includes a major railway junction, APSRTC bus services, and regional airport connectivity to major cities like Hyderabad and Chennai.
+
+Healthcare:
+- The city has both government-run and private multispecialty hospitals offering services such as surgery, emergency care, maternity, pediatrics, and diagnostics.
+- Numerous specialty clinics and wellness centers are also available, including Ayurvedic and homeopathic services.
+- Emergency response services are well-coordinated with ambulances and telemedicine support.
+
+Education:
+- Rajahmundry is known as an educational hub, hosting a wide array of government and private schools, junior and degree colleges, and reputed technical institutes.
+- Courses range from traditional sciences to engineering, commerce, and vocational training.
+- High literacy and digital learning adoption make it a leader in educational infrastructure.
+
+Employment:
+- A large proportion of the population is employed in services such as banking, education, healthcare, and administration.
+- Textile businesses, traditional arts (like Kondapalli toys), and local commerce contribute to the economy.
+- The presence of coaching centers and digital startups offers employment in modern sectors.
+
+Renewable Energy:
+- Rajahmundry utilizes a hybrid energy system combining hydroelectric power (from nearby dams) and solar installations on public buildings and infrastructure.
+- The city has begun implementing rooftop solar on government schools and offices.
+
+Digital Access:
+- High-speed connectivity and digital literacy support widespread use of e-governance, online education, banking, and healthcare portals.
+- Smart kiosks and public digital service centers are available in commercial areas.
+
+Waste Management:
+- A waste-to-energy plant is under construction, aimed at converting solid waste into electricity and reducing landfill usage.
+- Waste segregation at source is promoted through public awareness campaigns and door-to-door education.
+- Plastic waste is processed through recycling units set up under the Clean City program.
+
+Sustainability Efforts:
+- Plastic recycling units are operational in industrial zones and select commercial areas.
+- Municipal buildings and street lighting are being upgraded with energy-efficient LED retrofitting.
+- Citizens participate in Smart City and Swachh Bharat initiatives such as park adoption, neighborhood cleanliness, and lake revival efforts.

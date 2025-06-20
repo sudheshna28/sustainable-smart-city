@@ -1,13 +1,41 @@
 Village Name: Unduru
-Population: 4200
-Electricity Access: Full
-Water Source: Piped water supply
-Sewage System: Semi-covered drains
-Internet: 4G access
-Healthcare: 1 PHC and weekly doctor visits
-Education: School till Class 10 + digital learning center
-Transport: State bus service, local auto network
-Employment: Farming, tailoring, and local businesses
-Energy: LED streetlights, solar rooftops
-Waste Management: Household waste segregation started
-Sustainability Efforts: Rainwater harvesting, LED campaign, digital literacy
+Population: Approximately 4,200
+
+Infrastructure:
+- The village has full electricity coverage for all homes and public areas, including schools and local businesses.
+- Water is supplied through a piped municipal system that ensures daily access to clean drinking water.
+- The sewage system is semi-covered, with major drains covered and minor ones still open; improvements are underway to fully enclose the system.
+- 4G mobile network access is available across the village, supporting mobile internet, digital payments, and online services.
+- State buses connect Unduru to nearby towns, and a network of shared autos operates within and between neighboring villages.
+
+Healthcare:
+- A Primary Health Centre (PHC) located within the village provides outpatient services and basic medical support.
+- A general physician visits the village weekly for additional consultation services.
+- Emergency cases are referred to nearby town hospitals using local transport or ambulance.
+
+Education:
+- The village has a government school that provides education up to Class 10.
+- A digital learning center with computers and online resources helps students and youth access e-learning, tutorials, and job-oriented courses.
+- School initiatives include digital classrooms and environmental clubs.
+
+Employment:
+- Agriculture remains a major source of livelihood, especially rice and vegetable farming.
+- Tailoring, weaving, small retail stores, and home-based businesses offer additional employment opportunities.
+- Some youth are engaged in freelance or online services via digital platforms.
+
+Renewable Energy:
+- Solar rooftops are installed on key public buildings, including the school and panchayat office.
+- LED streetlights reduce electricity consumption and improve nighttime safety.
+
+Digital Access:
+- Most households own smartphones, and digital services like banking, education, and healthcare access are growing.
+- A digital literacy campaign has been launched for adults, particularly women and the elderly.
+
+Waste Management:
+- Household-level segregation of dry and wet waste has been initiated.
+- Waste is collected by local workers and sent to temporary storage; composting programs are being piloted in schools and backyards.
+
+Sustainability Efforts:
+- Rainwater harvesting structures have been built in schools, anganwadis, and select houses.
+- The “LED for All” campaign has distributed energy-efficient bulbs to most homes.
+- Students participate in digital awareness drives, tree planting, and water-saving education.

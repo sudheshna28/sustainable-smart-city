@@ -1,13 +1,41 @@
-Village Name: Samalkota
-Population: 27,000
-Electricity Access: Full
-Water Source: Borewell + municipal water
-Sewage System: Closed drainage
-Internet: Broadband and mobile internet
-Healthcare: PHC, private clinics
-Education: Multiple schools, junior college
-Transport: Railway station, bus depot
-Employment: Market trading, agriculture, services
-Energy: Rooftop solar panels in schools
-Waste Management: Segregated waste collection started
-Sustainability Efforts: Plastic-free market zones
+Town Name: Samalkota
+Population: Approximately 27,000
+
+Infrastructure:
+- Full electricity access is available to all households, public buildings, and markets.
+- Water supply is managed through a combination of borewell sources and municipal piped water connections, ensuring sufficient availability during most months.
+- The town has a closed underground drainage system, reducing open water stagnation and related health risks.
+- Both broadband and mobile internet services are reliable, used for education, commerce, and public services.
+- Public transport is robust, with a railway station connecting to major lines and a local APSRTC bus depot supporting daily commutes.
+
+Healthcare:
+- A government Primary Health Centre (PHC) provides basic outpatient services, vaccinations, and maternal health.
+- Several private clinics and pharmacies support day-to-day healthcare needs, including general medicine and dental care.
+
+Education:
+- The town hosts multiple public and private schools catering to primary and secondary education.
+- A junior college provides intermediate-level courses in science, commerce, and arts.
+- Basic digital learning and smart classroom tools are being adopted in some institutions.
+
+Employment:
+- Agriculture remains a key occupation, especially for surrounding villages, with Samalkota acting as a market hub for produce.
+- Market trading, small-scale businesses, and service-sector jobs (transport, retail, education) form the backbone of the local economy.
+- Limited industrial presence; some youth migrate for higher job opportunities.
+
+Renewable Energy:
+- Rooftop solar panels have been installed on school buildings and some municipal structures.
+- Interest is growing in expanding solar usage to homes and commercial buildings.
+
+Digital Access:
+- Digital penetration is high with a mix of mobile and broadband internet.
+- Government e-services (like Aadhaar, ration cards, property tax payments) are accessed via local MeeSeva centers.
+
+Waste Management:
+- A segregated waste collection program has been initiated by the local municipality.
+- Public awareness drives are educating households to separate organic and plastic waste before disposal.
+- Waste is collected door-to-door by designated workers.
+
+Sustainability Efforts:
+- Samalkota has implemented “plastic-free zones” in its main market areas, encouraging traders to adopt cloth and paper bags.
+- Local schools conduct environment awareness campaigns including tree planting and water conservation.
+- LED street lighting and rainwater recharge pits are being introduced in key wards.

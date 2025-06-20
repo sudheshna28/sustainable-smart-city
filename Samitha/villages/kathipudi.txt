@@ -1,13 +1,39 @@
 Village Name: Kathipudi
 Population: 3300
-Electricity Access: Almost full
-Water Source: Handpumps and piped supply
-Sewage System: Developing closed system
-Internet: Available (4G)
-Healthcare: Visiting doctors biweekly
-Education: Government high school
-Transport: Local autos and tractors
-Employment: Agriculture and small-scale vendors
-Energy: Solar study lamps for students
-Waste Management: Mini compost plant set up in 2024
-Sustainability Efforts: Bio toilets, smokeless chulhas, clean cooking campaign
+
+Infrastructure:
+- Electricity access covers nearly all households, with only a few areas yet to be fully connected.
+- Water supply is available through both traditional handpumps and a growing piped water network under local development projects.
+- A semi-structured closed sewage system is currently being constructed, showing active infrastructural progress.
+- Internet access via 4G networks is generally reliable for mobile users, although fixed broadband is not widespread.
+- Local transportation is served by shared autos and tractors; there is no formal public transport or inter-village bus service.
+
+Healthcare:
+- Doctors visit the village twice a week, offering basic consultations.
+- No permanent health center exists yet; for emergencies, residents rely on nearby town facilities.
+
+Education:
+- The village has a government-run high school (grades 1–10), enabling students to complete secondary education locally.
+- Higher education requires travel to nearby towns.
+
+Employment:
+- Most families engage in agriculture, cultivating paddy and vegetables.
+- Small-scale vendors sell goods like groceries and snacks within the village.
+- Limited non-agricultural job opportunities are available.
+
+Renewable Energy:
+- Solar-powered study lamps have been provided to students under state-supported rural electrification initiatives.
+- There are no large-scale solar energy installations yet.
+
+Digital Access:
+- Majority of youth use smartphones for education and communication.
+- Basic digital literacy is improving through school-based training.
+
+Waste Management:
+- A mini composting plant was established in 2024 to manage organic waste from households and farms.
+- Villagers are encouraged to segregate waste before disposal.
+
+Sustainability Efforts:
+- Bio-toilets have been installed in several homes to reduce open defecation.
+- Under clean cooking initiatives, smokeless chulhas have been distributed to reduce indoor air pollution.
+- Participation in local Swachh Bharat drives and awareness campaigns around clean energy and sanitation is growing.
