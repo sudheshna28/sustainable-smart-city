@@ -1,0 +1,41 @@
+Village/Town Name: Pedhapuram
+Population: Approximately 50,000
+
+Infrastructure:
+- Electricity is fully available across residential, commercial, and public areas, with stable voltage and minimal outages.
+- Water is supplied through a municipal filtration system, ensuring clean drinking water to all households via piped connections.
+- The sewage network is semi-closed, with a treatment plant under development to transition to a fully modern wastewater management system.
+- Internet access is reliable, with availability of 4G mobile services and fixed broadband used in households, schools, and small businesses.
+- Transport facilities include state-run buses connecting to nearby towns and cities. Shared autos are available for local commuting. No railway station is present in the town.
+
+Healthcare:
+- Pedhapuram has an area hospital providing inpatient and outpatient services.
+- A Primary Health Centre (PHC) offers basic treatments and vaccinations.
+- An Ayurvedic wellness center promotes traditional medicine practices.
+- Access to emergency medical services is timely, with ambulance support available.
+
+Education:
+- The town has a mix of government and private educational institutions, including primary and secondary schools, and intermediate colleges.
+- Vocational and skill development centers are emerging through state programs.
+
+Employment:
+- Residents are employed in local shops, agricultural activities, and as government employees.
+- Some employment also exists in education, healthcare, and basic services.
+- Industrial or IT presence is limited but there is potential for expansion due to improving infrastructure.
+
+Renewable Energy:
+- Rooftop solar panels are installed on municipal buildings and schools.
+- Smart water meters help monitor water usage and reduce wastage.
+
+Digital Access:
+- Most homes have smartphones, and digital literacy is increasing among youth.
+- Common digital services include online payments, government schemes, telehealth, and e-learning.
+
+Waste Management:
+- Door-to-door garbage collection is being implemented with support from local municipality.
+- Waste segregation initiatives have begun, and composting units are being considered for organic waste processing.
+
+Sustainability Efforts:
+- Community-level rainwater harvesting tanks have been constructed in public areas and schools.
+- Citizens are encouraged to take “green pledges” — commitments to reduce plastic use, plant trees, and conserve energy.
+- Annual environment awareness drives and school campaigns are common.

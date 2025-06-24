@@ -1,0 +1,35 @@
+Village Name: Atchampeta
+Population: 1900
+
+Infrastructure:
+- Electricity access is available to select households but not consistent across the village.
+- Drinking water is drawn from open wells, raising concerns over quality and hygiene.
+- There is no structured sewage or drainage system; wastewater flows openly, causing health and environmental risks.
+- Internet connectivity is minimal, mostly limited to mobile data with weak signals.
+- Transportation infrastructure is poor, with no government or private public transport; villagers depend on personal bikes or autos.
+
+Healthcare:
+- No primary health center or clinic is available. A mobile medical van visits once a week, offering only basic services.
+- Emergency medical access is limited due to poor transport and distant hospitals.
+
+Education:
+- The village has a government primary school (grades 1–5), but no secondary or higher education facilities.
+- Many students drop out or travel to nearby towns for schooling beyond the primary level.
+
+Employment:
+- Majority of the population work as daily wage laborers in agriculture or construction.
+- Lack of local employment opportunities forces youth to migrate seasonally.
+
+Renewable Energy:
+- A few solar lamps have been distributed under government schemes, but no large-scale adoption of renewable energy yet.
+
+Digital Access:
+- Very few households own smartphones or computers.
+- Limited digital literacy and lack of digital resources (e.g., e-learning, online banking).
+
+Waste Management:
+- Waste is dumped in an open area on the outskirts; there is no formal waste collection, segregation, or recycling system.
+
+Sustainability Efforts:
+- Participated in Swachh Bharat Abhiyan with basic cleanliness drives.
+- Occasional tree plantations have been carried out by school children and local youth groups, but long-term follow-up is missing.

@@ -1,0 +1,40 @@
+Village Name: Navara
+Population: 3100
+
+Infrastructure:
+- Approximately 85% of households have electricity access; outages and fluctuations are common, especially during peak hours.
+- Water supply is inconsistent and depends on open wells and periodic tanker deliveries, particularly during summer months.
+- There is no formal sewage system; wastewater is disposed of through open drains or backyard soak pits, contributing to sanitation risks.
+- Internet connectivity is patchy, relying on 3G/4G mobile networks with poor signal strength in several areas.
+- Public transport is absent; shared autos are used to travel to the nearest town, limiting daily commuting and accessibility.
+
+Healthcare:
+- The village has no healthcare facility or pharmacy.
+- Residents must travel 8–10 km to access medical care, which becomes difficult during emergencies or at night.
+
+Education:
+- A government school is available that offers education up to the 10th class.
+- Students aspiring for higher secondary or college education must migrate to towns.
+
+Employment:
+- Most villagers depend on traditional farming of rice and pulses.
+- Seasonal labor is common during harvest and construction seasons, both locally and in urban areas.
+- Lack of local employment opportunities causes out-migration of youth.
+
+Renewable Energy:
+- A proposal to install community solar panels has been submitted under a rural development scheme, but implementation is pending.
+- Currently, there is no village-wide use of renewable energy sources.
+
+Digital Access:
+- A minority of households own smartphones.
+- Digital literacy levels are low, and usage is mostly limited to basic communication.
+
+Waste Management:
+- No organized waste collection or disposal system exists.
+- Households burn or dump waste in open spaces.
+- Local youth groups and school teachers have conducted awareness drives, but no infrastructure has followed yet.
+
+Sustainability Efforts:
+- Conducted community-level workshops promoting a ban on single-use plastic.
+- Villagers are aware of plastic hazards but lack viable alternatives or enforcement mechanisms.
+- Some initiatives by schoolchildren promote tree planting and cleanliness.
