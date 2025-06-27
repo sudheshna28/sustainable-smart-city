@@ -1,0 +1,24 @@
+# Core frameworks
+fastapi
+uvicorn
+streamlit
+
+# ML + LLMs
+transformers
+sentence-transformers
+torch
+tensorflow
+keras
+
+# Utilities
+pandas
+numpy
+requests
+python-dotenv
+
+# Visualization
+plotly
+altair
+
+# Optional (for styling & images)
+Pillow
