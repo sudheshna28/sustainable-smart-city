@@ -23,7 +23,7 @@ if 'hf_token' not in st.session_state:
 
 # --- Hugging Face Image Generation ---
 def generate_image_with_huggingface(prompt, hf_token):
-    model_id = "black-forest-labs/FLUX.1-dev"
+    model_id =  "black-forest-labs/FLUX.1-schnell"
     api_url = f"https://api-inference.huggingface.co/models/{model_id}"
     headers = {"Authorization": f"Bearer {hf_token}"}
     payload = {"inputs": prompt}
