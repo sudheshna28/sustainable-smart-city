@@ -1,20 +1,19 @@
-# --- FIXED VERSION OF STREAMLIT APP INCLUDING FEATURE 2 VILLAGE COMPARISON ---
-
 import streamlit as st
+import pandas as pd
+import numpy as np
+import altair as alt
+import plotly.express as px
 import requests
 from datetime import datetime
-import pandas as pd
-import plotly.express as px
 import base64
 
 # ---------------- Background Image Setup ---------------- #
 @st.cache_data
 def get_base64_bg(file_path):
     with open(file_path, "rb") as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
+        return base64.b64encode(f.read()).decode()
 
-bg_base64 = get_base64_bg("background.jpg")
+bg_base64 = get_base64_bg("background.jpg")  # Ensure this file exists
 
 st.set_page_config(
     page_title="AI Assistant Hub",
@@ -31,12 +30,11 @@ st.markdown(f"""
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-color: rgba(0, 0, 0, 0.3);
         background-blend-mode: darken;
     }}
     .stApp > header {{ background-color: transparent; }}
     .stSidebar > div:first-child {{
-        background: linear-gradient(180deg, rgba(46,125,50,0.95), rgba(76,175,80,0.95), rgba(129,199,132,0.95));
+        background: linear-gradient(180deg, rgba(46,125,50,0.95), rgba(76,175,80,0.95));
         backdrop-filter: blur(10px);
     }}
     .chat-message, .metric-card {{
@@ -45,24 +43,18 @@ st.markdown(f"""
     }}
     .user-message {{ background: rgba(76,175,80,0.9); margin-left: 50px; }}
     .bot-message {{ background: rgba(0,0,0,0.85); margin-right: 50px; }}
-    .stTextInput input {{
-        background: rgba(0,0,0,0.8); color: white; border: 2px solid #4caf50;
-    }}
-    .stButton > button {{
-        background: linear-gradient(135deg,#4caf50,#81c784); color: white;
-        font-weight: bold; border: none; box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- FastAPI Backends ---------------- #
+# ---------------- FastAPI Configs ---------------- #
 FASTAPI_CONFIGS = {
     "feature_1": "http://localhost:8001",
     "feature_2": "http://localhost:8002",
-    "feature_3": "http://localhost:8003",
-    "feature_4": "http://your-friends-domain.com"
+    "feature_3": "http://localhost:8003",  # Now used for City Problem Solver
+    "feature_4": "http://your-friends-domain.com"  # Optional placeholder
 }
 
+# ---------------- Streamlit State ---------------- #
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "selected_feature" not in st.session_state:
@@ -99,19 +91,40 @@ with st.sidebar:
 
 # ---------------- Dashboard ---------------- #
 if st.session_state.selected_feature == "Dashboard":
-    st.markdown("<h1 style='text-align:center; color:white;'>🌿 AI Assistant Dashboard</h1>", unsafe_allow_html=True)
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown("""<div class='metric-card'><h3>📊 Total Queries</h3><h2>1,247</h2><p style='color:#4caf50;'>↗️ +12%</p></div>""", unsafe_allow_html=True)
-    with col2:
-        st.markdown(f"""<div class='metric-card'><h3>⚡ Active Features</h3><h2>{len(FASTAPI_CONFIGS)}</h2><p style='color:#4caf50;'>All Online</p></div>""", unsafe_allow_html=True)
-    with col3:
-        st.markdown("""<div class='metric-card'><h3>⏱️ Avg Response</h3><h2>1.2s</h2><p style='color:#4caf50;'>↗️ Improved</p></div>""", unsafe_allow_html=True)
-    with col4:
-        st.markdown("""<div class='metric-card'><h3>👥 Active Users</h3><h2>89</h2><p style='color:#4caf50;'>↗️ +5</p></div>""", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align:center; color:white;'>🌆 City Health Dashboard - Kakinada</h1>", unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
+    # Simulated Data
+    np.random.seed(42)
+    days = pd.date_range(end=pd.Timestamp.today(), periods=7)
+    city_df = pd.DataFrame({
+        "Date": days,
+        "Air Quality Index": np.random.randint(50, 150, size=7),
+        "Water Usage (liters)": np.random.randint(100000, 200000, size=7),
+        "Electricity Consumption (kWh)": np.random.randint(5000, 10000, size=7),
+        "Waste Generated (tons)": np.random.uniform(20, 50, size=7).round(2)
+    })
+
+    # KPI Metrics
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Today's AQI", f"{city_df['Air Quality Index'].iloc[-1]}")
+    col2.metric("Water Usage", f"{city_df['Water Usage (liters)'].iloc[-1]:,} L")
+    col3.metric("Power Usage", f"{city_df['Electricity Consumption (kWh)'].iloc[-1]:,} kWh")
+    col4.metric("Waste Collected", f"{city_df['Waste Generated (tons)'].iloc[-1]} tons")
+
+    # Trend Chart
+    st.subheader("📈 Trends Over the Past Week")
+    alt_chart = alt.Chart(city_df).transform_fold(
+        ['Air Quality Index', 'Water Usage (liters)', 'Electricity Consumption (kWh)', 'Waste Generated (tons)']
+    ).mark_line(point=True).encode(
+        x='Date:T',
+        y='value:Q',
+        color='key:N'
+    ).properties(width=800, height=400)
+    st.altair_chart(alt_chart, use_container_width=True)
+
+    # Usage Data
+    col5, col6 = st.columns(2)
+    with col5:
         usage_data = pd.DataFrame({
             'Date': pd.date_range(start='2024-01-01', periods=7),
             'Queries': [45, 52, 48, 61, 55, 67, 58]
@@ -120,7 +133,7 @@ if st.session_state.selected_feature == "Dashboard":
         fig.update_layout(paper_bgcolor='rgba(0,0,0,0.6)', font_color='white')
         st.plotly_chart(fig, use_container_width=True)
 
-    with col2:
+    with col6:
         feature_data = pd.DataFrame({
             'Feature': [f.replace("_", " ").title() for f in FASTAPI_CONFIGS.keys()],
             'Usage': [30, 25, 25, 20]
@@ -129,19 +142,23 @@ if st.session_state.selected_feature == "Dashboard":
         fig.update_layout(paper_bgcolor='rgba(0,0,0,0.6)', font_color='white')
         st.plotly_chart(fig, use_container_width=True)
 
-    st.markdown("<h2 style='color:white;'>📋 Recent Activity</h2>", unsafe_allow_html=True)
+    st.subheader("📋 Raw Data")
+    st.dataframe(city_df)
+
+    # Logs
+    st.markdown("<h2 style='color:white;'>🕒 Recent Activity</h2>", unsafe_allow_html=True)
     logs = [
         {"time": "2m", "user": "User123", "feature": "Feature 1", "query": "Summarize"},
         {"time": "5m", "user": "User456", "feature": "Feature 2", "query": "Compare villages"},
     ]
-    for act in logs:
-        st.markdown(f"""<div class='chat-message'><b>{act['time']} ago</b> - {act['user']} used <b>{act['feature']}</b><br><em>"{act['query']}"</em></div>""", unsafe_allow_html=True)
+    for log in logs:
+        st.markdown(f"""<div class='chat-message'><b>{log['time']} ago</b> - {log['user']} used <b>{log['feature']}</b><br><em>\"{log['query']}\"</em></div>""", unsafe_allow_html=True)
 
-# ---------------- Feature 2: Village Comparison ---------------- #
+# ---------------- Feature 2: Village Comparator ---------------- #
 elif st.session_state.selected_feature == "Feature 2":
     st.markdown("<h1 style='text-align:center; color:white;'>🏘️ Village Sustainability Comparator</h1>", unsafe_allow_html=True)
     api_url = FASTAPI_CONFIGS.get("feature_2")
-    
+
     with st.form("compare_form"):
         village1 = st.text_input("Enter First Village Name")
         village2 = st.text_input("Enter Second Village Name")
@@ -160,17 +177,42 @@ elif st.session_state.selected_feature == "Feature 2":
         except Exception as e:
             st.error(f"🔌 Failed to connect to Feature 2: {str(e)}")
 
-# ---------------- Other Features Use Chat ---------------- #
+# ---------------- Feature 3: City Problem Solver ---------------- #
+elif st.session_state.selected_feature == "Feature 3":
+    st.markdown("<h1 style='text-align:center; color:white;'>🏙️ City Problem Solver</h1>", unsafe_allow_html=True)
+    api_url = FASTAPI_CONFIGS.get("feature_3")
+
+    with st.form("problem_form"):
+        problem_desc = st.text_area("Describe the Problem")
+        submitted = st.form_submit_button("Get Solution 💡")
+
+    if submitted and problem_desc:
+        try:
+            with st.spinner("Fetching solutions..."):
+                res = requests.post(f"{api_url}/solve", json={
+                    "problem": problem_desc,
+                    "temperature": temperature,
+                    "max_tokens": max_tokens
+                }, timeout=20)
+            if res.status_code == 200:
+                solution = res.json().get("solution", "No solution returned.")
+                st.success("Solution generated!")
+                st.markdown(f"""<div class='chat-message bot-message'><strong>Solution:</strong><br>{solution}</div>""", unsafe_allow_html=True)
+            else:
+                st.error(f"❌ Error {res.status_code}: {res.text}")
+        except Exception as e:
+            st.error(f"🔌 Failed to connect to Feature 3: {str(e)}")
+
+# ---------------- Fallback Chat Features ---------------- #
 else:
     feature_key = st.session_state.selected_feature.lower().replace(" ", "_")
     api_url = FASTAPI_CONFIGS.get(feature_key)
-    st.markdown(f"<h1 style='text-align:center; color:white;'>🤖 {st.session_state.selected_feature} Chat</h1>", unsafe_allow_html=True)
 
-    with st.container():
-        for msg in st.session_state.messages:
-            css_class = "user-message" if msg["role"] == "user" else "bot-message"
-            sender = "You" if msg["role"] == "user" else f"🤖 {st.session_state.selected_feature}"
-            st.markdown(f"""<div class='chat-message {css_class}'><strong>{sender}:</strong><br>{msg['content']}</div>""", unsafe_allow_html=True)
+    st.markdown(f"<h1 style='text-align:center; color:white;'>🤖 {st.session_state.selected_feature} Chat</h1>", unsafe_allow_html=True)
+    for msg in st.session_state.messages:
+        css_class = "user-message" if msg["role"] == "user" else "bot-message"
+        sender = "You" if msg["role"] == "user" else f"🤖 {st.session_state.selected_feature}"
+        st.markdown(f"""<div class='chat-message {css_class}'><strong>{sender}:</strong><br>{msg['content']}</div>""", unsafe_allow_html=True)
 
     with st.form("chat_form", clear_on_submit=True):
         col1, col2 = st.columns([6, 1])
