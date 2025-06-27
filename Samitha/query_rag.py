@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class SmartVillageComparator:
-    def __init__(self, index_path="faiss_index"):
+    def __init__(self, index_path=r"C:\Users\DELL\Desktop\sustainble\sustainable-smart-city\samitha\faiss_index"):
         """Initialize the village comparator with FAISS index and models."""
         self.index_path = index_path
         self.index = None
@@ -24,7 +24,148 @@ class SmartVillageComparator:
         self.llm_model = None
         self.tokenizer = None
         
+        # Check if index files exist before loading
+        if not self._check_index_files():
+            self._prompt_for_index_path()
+        
         self.load_components()
+
+    def _check_index_files(self) -> bool:
+        """Check if all required index files exist."""
+        required_files = [
+            f"{self.index_path}/village.index",
+            f"{self.index_path}/texts.pkl",
+            f"{self.index_path}/metadata.pkl"
+        ]
+        
+        missing_files = []
+        for file_path in required_files:
+            if not os.path.exists(file_path):
+                missing_files.append(file_path)
+        
+        if missing_files:
+            logger.error(f"Missing index files: {missing_files}")
+            return False
+        return True
+
+    def _prompt_for_index_path(self):
+        """Prompt user for correct index path or help them create the index."""
+        print("❌ FAISS index files not found!")
+        print(f"Looking for files in: {os.path.abspath(self.index_path)}")
+        print("\nRequired files:")
+        print("  - village.index")
+        print("  - texts.pkl") 
+        print("  - metadata.pkl")
+        
+        print("\nOptions:")
+        print("1. Enter the correct path to your FAISS index directory")
+        print("2. Create a new index (you'll need data files)")
+        print("3. Exit")
+        
+        while True:
+            choice = input("\nEnter your choice (1/2/3): ").strip()
+            
+            if choice == "1":
+                new_path = input("Enter the correct index path: ").strip()
+                if new_path:
+                    self.index_path = new_path
+                    if self._check_index_files():
+                        print("✅ Index files found!")
+                        return
+                    else:
+                        print("❌ Files still not found at the specified path.")
+                        continue
+            elif choice == "2":
+                self._guide_index_creation()
+                return
+            elif choice == "3":
+                raise SystemExit("Exiting application.")
+            else:
+                print("Invalid choice. Please enter 1, 2, or 3.")
+
+    def _guide_index_creation(self):
+        """Guide user through index creation process."""
+        print("\n📋 INDEX CREATION GUIDE")
+        print("=" * 50)
+        print("To create a FAISS index, you need:")
+        print("1. Text data files (CSV, JSON, or TXT)")
+        print("2. Run the indexing script")
+        
+        data_path = input("\nEnter path to your data files (or press Enter to skip): ").strip()
+        
+        if data_path and os.path.exists(data_path):
+            print(f"Data path found: {data_path}")
+            self._create_basic_index(data_path)
+        else:
+            print("\n⚠️  No data path provided or path doesn't exist.")
+            print("Creating a demo mode with sample data...")
+            self._create_demo_mode()
+
+    def _create_demo_mode(self):
+        """Create a demo mode with sample village data."""
+        print("\n🎯 Creating demo mode with sample data...")
+        
+        # Sample village data
+        sample_data = [
+            "Hiware Bazar is a model village in Maharashtra known for water conservation and renewable energy initiatives.",
+            "Punsari village in Gujarat has implemented smart governance with digital services and solar energy.",
+            "Mawlynnong in Meghalaya is known as Asia's cleanest village with excellent waste management.",
+            "Pothanikkad in Kerala has achieved 100% organic farming and sustainable agriculture practices.",
+            "Ralegan Siddhi in Maharashtra is famous for watershed management and water harvesting.",
+            "Dharnai village in Bihar became India's first solar-powered village with renewable energy.",
+            "Shani Shingnapur in Maharashtra has digital banking and cashless transactions.",
+            "Kokrebellur in Karnataka is known for bird conservation and eco-tourism.",
+        ]
+        
+        sample_metadata = [f"Village data {i+1}" for i in range(len(sample_data))]
+        
+        # Create directory
+        os.makedirs(self.index_path, exist_ok=True)
+        
+        # Save sample data
+        with open(f"{self.index_path}/texts.pkl", "wb") as f:
+            pickle.dump(sample_data, f)
+            
+        with open(f"{self.index_path}/metadata.pkl", "wb") as f:
+            pickle.dump(sample_metadata, f)
+        
+        # Create embeddings and index
+        try:
+            from sentence_transformers import SentenceTransformer
+            model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+            embeddings = model.encode(sample_data)
+            
+            # Create FAISS index
+            dimension = embeddings.shape[1]
+            index = faiss.IndexFlatIP(dimension)  # Inner product for similarity
+            
+            # Normalize embeddings for cosine similarity
+            faiss.normalize_L2(embeddings.astype('float32'))
+            index.add(embeddings.astype('float32'))
+            
+            # Save index
+            faiss.write_index(index, f"{self.index_path}/village.index")
+            
+            print("✅ Demo index created successfully!")
+            print(f"Created index with {len(sample_data)} sample villages")
+            
+        except Exception as e:
+            logger.error(f"Error creating demo index: {e}")
+            raise
+
+    def _create_basic_index(self, data_path: str):
+        """Create index from user data files."""
+        try:
+            # This is a placeholder for actual index creation
+            # You would implement data loading and processing here
+            print(f"🔄 Processing data from: {data_path}")
+            print("⚠️  Index creation from custom data not implemented in this demo.")
+            print("Using demo mode instead...")
+            self._create_demo_mode()
+            
+        except Exception as e:
+            logger.error(f"Error creating index: {e}")
+            self._create_demo_mode()
 
     def load_components(self):
         """Load all necessary components."""
@@ -40,12 +181,21 @@ class SmartVillageComparator:
     def load_index(self):
         """Load FAISS index and associated data."""
         try:
-            self.index = faiss.read_index(f"{self.index_path}/village.index")
+            index_file = f"{self.index_path}/village.index"
+            texts_file = f"{self.index_path}/texts.pkl"
+            metadata_file = f"{self.index_path}/metadata.pkl"
             
-            with open(f"{self.index_path}/texts.pkl", "rb") as f:
+            # Verify files exist
+            for file_path in [index_file, texts_file, metadata_file]:
+                if not os.path.exists(file_path):
+                    raise FileNotFoundError(f"Required file not found: {file_path}")
+            
+            self.index = faiss.read_index(index_file)
+            
+            with open(texts_file, "rb") as f:
                 self.texts = pickle.load(f)
                 
-            with open(f"{self.index_path}/metadata.pkl", "rb") as f:
+            with open(metadata_file, "rb") as f:
                 self.metadata = pickle.load(f)
                 
             logger.info(f"Loaded index with {len(self.texts)} documents")
@@ -65,7 +215,15 @@ class SmartVillageComparator:
             logger.info("Embedding model loaded successfully")
         except Exception as e:
             logger.error(f"Error loading embedding model: {e}")
-            raise
+            print("⚠️  Installing sentence-transformers...")
+            os.system("pip install sentence-transformers")
+            try:
+                from sentence_transformers import SentenceTransformer
+                self.embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+                logger.info("Embedding model loaded successfully after installation")
+            except Exception as e2:
+                logger.error(f"Still failed to load embedding model: {e2}")
+                raise
 
     def load_llm_model(self):
         """Load the language model for text generation."""
@@ -82,7 +240,10 @@ class SmartVillageComparator:
         """Convert text query to embedding vector."""
         try:
             embedding = self.embedding_model.encode([query])
-            return np.array(embedding).astype("float32")
+            # Normalize for cosine similarity
+            embedding = embedding.astype('float32')
+            faiss.normalize_L2(embedding)
+            return embedding
         except Exception as e:
             logger.error(f"Error embedding query: {e}")
             return np.array([]).astype("float32")
@@ -95,7 +256,7 @@ class SmartVillageComparator:
             if query_embedding.size == 0:
                 return [], []
                 
-            distances, indices = self.index.search(query_embedding, top_k * 2)  # Get more candidates
+            distances, indices = self.index.search(query_embedding, min(top_k * 2, len(self.texts)))
             
             # Filter results that are actually about the village
             relevant_chunks = []
@@ -498,6 +659,8 @@ def main():
     try:
         comparator = SmartVillageComparator()
         comparator.run_interactive_session()
+    except SystemExit:
+        pass  # Normal exit
     except Exception as e:
         print(f"❌ Failed to initialize the application: {e}")
         print("Please check if all required files and models are available.")

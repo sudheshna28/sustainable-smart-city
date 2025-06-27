@@ -6,7 +6,7 @@ from typing import Optional
 import os
 
 # Import your actual logic from recycle.py
-from .recycle import (
+from samitha.recycle import (
     GraniteAPIClient,
     get_sustainability_advice_api,
 )
