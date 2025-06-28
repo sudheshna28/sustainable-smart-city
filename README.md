@@ -68,7 +68,7 @@ Sustainable-Smart-City-Assistant/
 
 1. Clone the repository
    bash
-   git clone https://github.com/your-username/smart-city-assistant.git
+   git clone https://github.com/sudheshna28/smart-city-assistant.git
    cd smart-city-assistant
 
 2. Install dependencies
