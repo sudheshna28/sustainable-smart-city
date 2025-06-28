@@ -25,9 +25,8 @@ An intelligent and interactive web-based assistant built to empower citizens and
 - Compares sustainability indicators across multiple cities.
 - Supports metrics like air quality, green cover, recycling rate, and water usage.
 
----
 
-📁 Project Structure
+```📁 Project Structure
 Sustainable-Smart-City-Assistant/
 │
 ├── Sai_Sudheshna/
@@ -64,7 +63,7 @@ Sustainable-Smart-City-Assistant/
 │
 └── requirements.txt
 
-
+```
 ⚙️ Installation & Running Locally
 
 1. Clone the repository
