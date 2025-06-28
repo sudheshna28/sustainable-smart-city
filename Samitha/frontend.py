@@ -363,9 +363,34 @@ elif selected_feature_key == "feature_2":
         st.warning("⚠️ Please enter both village names to compare.")
 
 # ---------------- Feature 3: City Problem Solver (Fixed) ---------------- #
+# Replace your existing Feature 3 section with this:
+
 elif selected_feature_key == "feature_3":
     st.markdown("<h1 style='text-align:center; color:white;'>🏙️ Smart City Problem Solver</h1>", unsafe_allow_html=True)
     api_url = FASTAPI_CONFIGS.get("feature_3")
+
+    # Debug section
+    with st.expander("🔧 Debug Information"):
+        if st.button("Test API Connection"):
+            try:
+                health_response = requests.get(f"{api_url}/health", timeout=5)
+                if health_response.status_code == 200:
+                    health_data = health_response.json()
+                    st.success("✅ API is responding!")
+                    st.json(health_data)
+                else:
+                    st.error(f"❌ Health check failed: {health_response.status_code}")
+            except Exception as e:
+                st.error(f"❌ Connection failed: {str(e)}")
+        
+        if st.button("Test Debug Endpoint"):
+            try:
+                debug_payload = {"query": "test traffic congestion problem"}
+                debug_response = requests.post(f"{api_url}/debug", json=debug_payload, timeout=10)
+                st.write("Debug Response Status:", debug_response.status_code)
+                st.json(debug_response.json())
+            except Exception as e:
+                st.error(f"Debug test failed: {str(e)}")
 
     with st.form("problem_form"):
         problem_desc = st.text_area(
@@ -375,7 +400,6 @@ elif selected_feature_key == "feature_3":
             help="Describe any urban challenge you're facing and we'll provide smart city solutions!"
         )
         
-        # Add problem category selector for better context
         problem_category = st.selectbox(
             "Problem Category (Optional):",
             ["General", "Traffic & Transportation", "Environment", "Waste Management", "Energy", "Housing", "Public Safety", "Digital Infrastructure"]
@@ -390,84 +414,133 @@ elif selected_feature_key == "feature_3":
             if problem_category != "General":
                 enhanced_problem = f"[{problem_category}] {enhanced_problem}"
             
-            # Fixed payload to match your API
-            payload = {
-                "query": enhanced_problem  # Changed from "problem" to "query"
-            }
+            # Payload to match your API exactly
+            payload = {"query": enhanced_problem}
             
-            response = make_api_request(f"{api_url}/solve", payload)  # Using /solve endpoint
-            
-            if isinstance(response, tuple):  # Error case
-                display_error(response[1])
-            elif response and response.status_code == 200:
-                try:
-                    result = response.json()
-                    
-                    # Extract data according to your API response structure
-                    is_related = result.get("is_smart_city_related", False)
-                    category = result.get("category", "Unknown")
-                    confidence = result.get("confidence_score", 0.0)
-                    steps = result.get("steps", [])
-                    original_solutions = result.get("original_solutions", [])
-                    
-                    if not is_related:
-                        st.warning("⚠️ The query doesn't seem to be related to smart city problems.")
-                    else:
-                        st.markdown('<div class="success-message">✅ Smart city solution generated!</div>', unsafe_allow_html=True)
+            try:
+                st.info(f"🔄 Sending request to: {api_url}/solve")
+                st.info(f"📝 Query: {enhanced_problem}")
+                
+                response = requests.post(f"{api_url}/solve", json=payload, timeout=30)
+                
+                st.info(f"📡 Response Status: {response.status_code}")
+                
+                if response.status_code == 200:
+                    try:
+                        result = response.json()
+                        st.success("✅ Smart city solution generated!")
                         
-                        # Display category and confidence
+                        # Display results
                         col1, col2 = st.columns(2)
                         with col1:
-                            st.info(f"🎯 Problem Category: **{category}**")
+                            st.info(f"🎯 **Category:** {result.get('category', 'Unknown')}")
                         with col2:
-                            st.info(f"🎲 Confidence Score: **{confidence:.2f}**")
+                            st.info(f"🎲 **Confidence:** {result.get('confidence_score', 0.0):.2f}")
                         
                         # Display solution steps
+                        steps = result.get("steps", [])
                         if steps:
-                            solution_text = "\n".join([f"• {step}" for step in steps])
-                            display_response(solution_text, "🏙️ Smart City Solution Steps")
+                            st.markdown("### 🔧 Recommended Solution Steps:")
+                            solution_text = ""
+                            for i, step in enumerate(steps, 1):
+                                solution_text += f"**Step {i}:** {step}\n\n"
+                            display_response(solution_text, "🏙️ Smart City Solutions")
+                        else:
+                            st.warning("No solution steps were generated.")
                         
-                        # Display original solutions if available
+                        # Display original solutions
+                        original_solutions = result.get("original_solutions", [])
                         if original_solutions:
-                            st.markdown("### 📚 Related Solutions Found:")
-                            for i, sol in enumerate(original_solutions[:3], 1):  # Show top 3
-                                with st.expander(f"Solution {i}: {sol.get('title', 'Untitled')}"):
-                                    st.write(sol.get('content', 'No content available'))
-                    
-                    # Display category and confidence
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.info(f"🎯 Problem Category: **{category}**")
-                    with col2:
-                        st.info(f"🎲 Confidence Score: **{confidence:.2f}**")
-                    
-                    # Display solution steps
-                    if steps:
-                        solution_text = "\n".join([f"• {step}" for step in steps])
-                        display_response(solution_text, "🏙️ Smart City Solution Steps")
-                    
-                    # Display original solutions if available
-                    if original_solutions:
-                        st.markdown("### 📚 Related Solutions Found:")
-                        for i, sol in enumerate(original_solutions[:3], 1):  # Show top 3
-                            with st.expander(f"Solution {i}: {sol.get('title', 'Untitled')}"):
-                                st.write(sol.get('content', 'No content available'))
-                    
-                except Exception as e:
-                    display_error(f"Failed to parse response: {str(e)}")
-            else:
-                error_msg = f"API returned status {response.status_code}"
-                if response:
+                            st.markdown("### 📚 Related Solutions:")
+                            for i, sol in enumerate(original_solutions[:3], 1):
+                                if isinstance(sol, dict):
+                                    title = sol.get('title', f'Solution {i}')
+                                    content = sol.get('content', 'No content available')
+                                else:
+                                    title = f'Solution {i}'
+                                    content = str(sol)
+                                
+                                with st.expander(f"💡 {title}"):
+                                    st.write(content)
+                        
+                        # Show timestamp
+                        timestamp = result.get("timestamp", "")
+                        if timestamp:
+                            st.caption(f"📅 Processed at: {timestamp}")
+                        
+                    except Exception as e:
+                        st.error(f"❌ Failed to parse response: {str(e)}")
+                        st.error(f"Raw response: {response.text}")
+                        
+                elif response.status_code == 400:
                     try:
-                        error_detail = response.json().get("detail", response.text)
-                        error_msg = f"{error_msg}: {error_detail}"
+                        error_detail = response.json().get("detail", "Problem not related to smart cities")
+                        st.warning(f"⚠️ {error_detail}")
+                        st.info("💡 Try describing urban challenges like traffic, pollution, or infrastructure issues.")
                     except:
-                        error_msg = f"{error_msg}: {response.text}"
-                display_error(error_msg)
+                        st.warning("⚠️ The query doesn't seem to be related to smart city problems.")
+                        
+                elif response.status_code == 500:
+                    st.error("❌ Internal server error occurred.")
+                    try:
+                        error_detail = response.json().get("detail", "Unknown server error")
+                        st.error(f"Server error: {error_detail}")
+                    except:
+                        st.error(f"Server returned: {response.text}")
+                    
+                    st.info("🔧 Try using the debug section above to troubleshoot.")
+                        
+                else:
+                    st.error(f"❌ API returned status {response.status_code}")
+                    try:
+                        error_detail = response.json().get("detail", "Unknown error")
+                        st.error(f"Error: {error_detail}")
+                    except:
+                        st.error(f"Response: {response.text}")
+                        
+            except requests.exceptions.Timeout:
+                st.error("⏰ Request timed out. The service might be busy.")
+                
+            except requests.exceptions.ConnectionError:
+                st.error(f"🔌 Failed to connect to {api_url}")
+                st.info("Make sure your FastAPI service is running on the correct port.")
+                
+            except Exception as e:
+                st.error(f"❌ Unexpected error: {str(e)}")
+                
     elif submitted:
         st.warning("⚠️ Please describe a city problem to get smart solutions.")
+        
+    # Example problems
+    with st.expander("💡 Example Problems"):
+        st.markdown("""
+        **Try these examples:**
+        - Traffic congestion during rush hours
+        - High air pollution levels in the city
+        - Waste management inefficiencies
+        - Power outages in residential areas
+        - Poor public transportation connectivity
+        - Urban heat island effect
+        - Water scarcity issues
+        - Lack of green spaces
+        """)
+
+    # API status
+    st.markdown("---")
+    try:
+        health_response = requests.get(f"{api_url}/health", timeout=2)
+        if health_response.status_code == 200:
+            health_data = health_response.json()
+            solver_status = "✅ Loaded" if health_data.get("solver_loaded") else "❌ Not Loaded"
+            st.success(f"🔌 API Status: Online | Solver: {solver_status}")
+        else:
+            st.error("🔌 API Status: Error")
+    except:
+        st.error("🔌 API Status: Offline")
+        st.info("Start with: `python -m uvicorn feature_3:app --host 0.0.0.0 --port 8003 --reload`")
 
 # ---------------- Feature 4: Dream City Generator (Friend's API) ---------------- #
+
 elif selected_feature_key == "feature_4":
     st.markdown("<h1 style='text-align:center; color:white;'>🏗️ Dream City Generator</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center; color:#81C784; font-style:italic;'>Powered by Innovation & Sustainability AI</p>", unsafe_allow_html=True)

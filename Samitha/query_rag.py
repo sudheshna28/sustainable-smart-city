@@ -361,7 +361,7 @@ class SmartVillageComparator:
             inputs = self.tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512)
             outputs = self.llm_model.generate(
                 **inputs, 
-                max_new_tokens=400,
+                max_new_tokens=800,
                 temperature=0.7,
                 do_sample=True,
                 pad_token_id=self.tokenizer.eos_token_id
