@@ -10,10 +10,19 @@ import base64
 # ---------------- Background Image Setup ---------------- #
 @st.cache_data
 def get_base64_bg(file_path):
-    with open(file_path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
+    try:
+        with open(file_path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    except FileNotFoundError:
+        # Return empty string if background image not found
+        return ""
 
-bg_base64 = get_base64_bg("background.jpg")  # Ensure this file exists
+# Try to load background image, fallback to no background
+try:
+    bg_base64 = get_base64_bg("background.jpg")
+    background_style = f'background-image: url("data:image/jpg;base64,{bg_base64}");' if bg_base64 else ""
+except:
+    background_style = ""
 
 st.set_page_config(
     page_title="Avenir - Reimagining Cities",
@@ -25,12 +34,13 @@ st.set_page_config(
 st.markdown(f"""
 <style>
     .main {{
-        background-image: url("data:image/jpg;base64,{bg_base64}");
+        {background_style}
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-blend-mode: darken;
+        background-color: #1e1e1e;
     }}
     .stApp > header {{ background-color: transparent; }}
     .stSidebar > div:first-child {{
@@ -38,11 +48,22 @@ st.markdown(f"""
         backdrop-filter: blur(10px);
     }}
     .chat-message, .metric-card {{
-        background: rgba(0,0,0,0.8); color: white; border-radius: 10px;
-        padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); backdrop-filter: blur(10px);
+        background: rgba(0,0,0,0.8); 
+        color: white; 
+        border-radius: 10px;
+        padding: 15px; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+        backdrop-filter: blur(10px);
+        margin: 10px 0;
     }}
-    .user-message {{ background: rgba(76,175,80,0.9); margin-left: 50px; }}
-    .bot-message {{ background: rgba(0,0,0,0.85); margin-right: 50px; }}
+    .user-message {{ 
+        background: rgba(76,175,80,0.9); 
+        margin-left: 50px; 
+    }}
+    .bot-message {{ 
+        background: rgba(0,0,0,0.85); 
+        margin-right: 50px; 
+    }}
     .app-header {{
         text-align: center;
         color: white;
@@ -54,6 +75,20 @@ st.markdown(f"""
         font-size: 1.2em;
         color: #81C784;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }}
+    .error-message {{
+        background: rgba(244,67,54,0.9);
+        color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 10px 0;
+    }}
+    .success-message {{
+        background: rgba(76,175,80,0.9);
+        color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 10px 0;
     }}
 </style>
 """, unsafe_allow_html=True)
@@ -83,6 +118,45 @@ if "messages" not in st.session_state:
 if "selected_feature_label" not in st.session_state:
     st.session_state.selected_feature_label = "Dashboard"
 
+# ---------------- Helper Functions ---------------- #
+def make_api_request(url, payload, timeout=20):
+    """Make API request with proper error handling"""
+    try:
+        response = requests.post(url, json=payload, timeout=timeout)
+        return response
+    except requests.exceptions.Timeout:
+        return None, "Request timed out. The service might be busy."
+    except requests.exceptions.ConnectionError:
+        return None, f"Failed to connect to service at {url}"
+    except Exception as e:
+        return None, f"Unexpected error: {str(e)}"
+
+def check_api_status(url):
+    """Check if API is online"""
+    try:
+        response = requests.get(f"{url}/health", timeout=2)
+        return "🟢 Online" if response.status_code == 200 else "🔴 Offline"
+    except:
+        return "🔴 Offline"
+
+def display_response(content, title="Response"):
+    """Display API response in a formatted way"""
+    st.markdown(
+        f"""<div class='chat-message bot-message'>
+        <strong>{title}:</strong><br>{content}
+        </div>""",
+        unsafe_allow_html=True
+    )
+
+def display_error(error_msg):
+    """Display error message in a formatted way"""
+    st.markdown(
+        f"""<div class='error-message'>
+        <strong>❌ Error:</strong><br>{error_msg}
+        </div>""",
+        unsafe_allow_html=True
+    )
+
 # ---------------- Main App Header ---------------- #
 st.markdown("""
 <div class='app-header'>
@@ -106,13 +180,6 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("### 🔌 API Status", unsafe_allow_html=True)
-
-    def check_api_status(url):
-        try:
-            response = requests.get(f"{url}/health", timeout=2)
-            return "🟢 Online" if response.status_code == 200 else "🔴 Offline"
-        except:  # noqa: E722
-            return "🔴 Offline"
 
     for key, url in FASTAPI_CONFIGS.items():
         status = check_api_status(url)
@@ -192,42 +259,61 @@ if st.session_state.selected_feature_label == "Dashboard":
     ]
     for log in logs:
         st.markdown(
-            f"""<div class='chat-message'><b>{log['time']} ago</b> - {log['user']} used <b>{log['feature']}</b><br><em>\"{log['query']}\"</em></div>""",
+            f"""<div class='chat-message'><b>{log['time']} ago</b> - {log['user']} used <b>{log['feature']}</b><br><em>"{log['query']}"</em></div>""",
             unsafe_allow_html=True
         )
 
-# ---------------- Feature 1: Recycle DIY Ideas ---------------- #
+# ---------------- Feature 1: Recycle DIY Ideas (Fixed) ---------------- #
 elif selected_feature_key == "feature_1":
-    st.markdown("<h1 style='text-align:center; color:white;'>♻️ Recycle DIY Idea Generator</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align:center; color:white;'>♻️ Sustainability Advisor</h1>", unsafe_allow_html=True)
     api_url = FASTAPI_CONFIGS.get("feature_1")
 
     with st.form("recycle_form"):
-        material = st.text_area("Enter recyclable material (e.g., plastic bottle, cardboard)")
-        submitted = st.form_submit_button("Get DIY Ideas 💡")
+        material = st.text_area(
+            "Enter waste material for sustainability advice:", 
+            placeholder="e.g., plastic bottle, cardboard box, glass jar, aluminum can, old clothes",
+            help="Describe the waste material and get sustainability advice and recycling ideas!"
+        )
+        submitted = st.form_submit_button("Get Sustainability Advice 💡")
 
-    if submitted and material:
-        try:
-            with st.spinner("Generating DIY ideas..."):
-                res = requests.post(
-                    f"{api_url}/diy",
-                    json={
-                        "material": material,
-                        "temperature": temperature,
-                        "max_tokens": max_tokens
-                    },
-                    timeout=20
-                )
-            if res.status_code == 200:
-                ideas = res.json().get("ideas", "No ideas returned.")
-                st.success("DIY ideas generated!")
-                st.markdown(
-                    f"""<div class='chat-message bot-message'><strong>DIY Ideas:</strong><br>{ideas}</div>""",
-                    unsafe_allow_html=True
-                )
+    if submitted and material.strip():
+        with st.spinner("🔄 Getting sustainability advice..."):
+            # Fixed payload to match your API
+            payload = {
+                "message": material.strip(),  # Changed from "material" to "message"
+                "temperature": temperature,
+                "max_tokens": max_tokens
+            }
+            
+            response = make_api_request(f"{api_url}/chat", payload)  # Using /chat endpoint
+            
+            if isinstance(response, tuple):  # Error case
+                display_error(response[1])
+            elif response and response.status_code == 200:
+                try:
+                    result = response.json()
+                    advice = result.get("response", "No advice returned.")
+                    feature_name = result.get("feature_name", "Sustainability Advisor")
+                    
+                    st.markdown('<div class="success-message">✅ Sustainability advice generated successfully!</div>', unsafe_allow_html=True)
+                    display_response(advice, f"♻️ {feature_name}")
+                    
+                    # Add material info
+                    st.info(f"💡 Advice for: **{material}**")
+                    
+                except Exception as e:
+                    display_error(f"Failed to parse response: {str(e)}")
             else:
-                st.error(f"❌ Error {res.status_code}: {res.text}")
-        except Exception as e:  # noqa: E722
-            st.error(f"🔌 Failed to connect to Recycle DIY Ideas API.\n\n{str(e)}")
+                error_msg = f"API returned status {response.status_code}"
+                if response:
+                    try:
+                        error_detail = response.json().get("detail", response.text)
+                        error_msg = f"{error_msg}: {error_detail}"
+                    except:
+                        error_msg = f"{error_msg}: {response.text}"
+                display_error(error_msg)
+    elif submitted:
+        st.warning("⚠️ Please enter a waste material to get sustainability advice.")
 
 # ---------------- Feature 2: Village Comparator ---------------- #
 elif selected_feature_key == "feature_2":
@@ -235,58 +321,151 @@ elif selected_feature_key == "feature_2":
     api_url = FASTAPI_CONFIGS.get("feature_2")
 
     with st.form("compare_form"):
-        village1 = st.text_input("Enter First Village Name")
-        village2 = st.text_input("Enter Second Village Name")
-        submitted = st.form_submit_button("Compare 🆚")
+        col1, col2 = st.columns(2)
+        with col1:
+            village1 = st.text_input("First Village Name", placeholder="e.g., Green Valley")
+        with col2:
+            village2 = st.text_input("Second Village Name", placeholder="e.g., Eco Hills")
+        
+        submitted = st.form_submit_button("Compare Villages 🆚")
 
-    if submitted and village1 and village2:
-        try:
-            with st.spinner("Comparing villages..."):
-                res = requests.post(f"{api_url}/compare", json={"village1": village1, "village2": village2})
-            if res.status_code == 200:
-                comparison = res.json().get("comparison")
-                st.success("Comparison complete!")
-                st.markdown(
-                    f"""<div class='chat-message bot-message'><strong>Result:</strong><br>{comparison}</div>""",
-                    unsafe_allow_html=True
-                )
+    if submitted and village1.strip() and village2.strip():
+        with st.spinner("🔄 Comparing villages..."):
+            payload = {
+                "village1": village1.strip(),
+                "village2": village2.strip()
+            }
+            
+            response = make_api_request(f"{api_url}/compare", payload)
+            
+            if isinstance(response, tuple):  # Error case
+                display_error(response[1])
+            elif response and response.status_code == 200:
+                try:
+                    result = response.json()
+                    comparison = result.get("comparison", "No comparison available.")
+                    
+                    st.markdown('<div class="success-message">✅ Village comparison completed!</div>', unsafe_allow_html=True)
+                    display_response(comparison, f"🏘️ {village1} vs {village2}")
+                    
+                except Exception as e:
+                    display_error(f"Failed to parse response: {str(e)}")
             else:
-                st.error(f"❌ Error {res.status_code}: {res.text}")
-        except Exception as e:  # noqa: E722
-            st.error(f"🔌 Failed to connect to Village Comparator API.\n\n{str(e)}")
+                error_msg = f"API returned status {response.status_code}"
+                if response:
+                    try:
+                        error_detail = response.json().get("detail", response.text)
+                        error_msg = f"{error_msg}: {error_detail}"
+                    except:
+                        error_msg = f"{error_msg}: {response.text}"
+                display_error(error_msg)
+    elif submitted:
+        st.warning("⚠️ Please enter both village names to compare.")
 
-# ---------------- Feature 3: City Problem Solver ---------------- #
+# ---------------- Feature 3: City Problem Solver (Fixed) ---------------- #
 elif selected_feature_key == "feature_3":
-    st.markdown("<h1 style='text-align:center; color:white;'>🏙️ City Problem Solver</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align:center; color:white;'>🏙️ Smart City Problem Solver</h1>", unsafe_allow_html=True)
     api_url = FASTAPI_CONFIGS.get("feature_3")
 
     with st.form("problem_form"):
-        problem_desc = st.text_area("Describe the Problem")
-        submitted = st.form_submit_button("Get Solution 💡")
+        problem_desc = st.text_area(
+            "Describe the Smart City Problem:",
+            placeholder="e.g., Traffic congestion in downtown area, waste management issues, air pollution",
+            height=120,
+            help="Describe any urban challenge you're facing and we'll provide smart city solutions!"
+        )
+        
+        # Add problem category selector for better context
+        problem_category = st.selectbox(
+            "Problem Category (Optional):",
+            ["General", "Traffic & Transportation", "Environment", "Waste Management", "Energy", "Housing", "Public Safety", "Digital Infrastructure"]
+        )
+        
+        submitted = st.form_submit_button("Get Smart Solution 💡")
 
-    if submitted and problem_desc:
-        try:
-            with st.spinner("Fetching solutions..."):
-                res = requests.post(
-                    f"{api_url}/solve",
-                    json={
-                        "problem": problem_desc,
-                        "temperature": temperature,
-                        "max_tokens": max_tokens
-                    },
-                    timeout=20
-                )
-            if res.status_code == 200:
-                solution = res.json().get("solution", "No solution returned.")
-                st.success("Solution generated!")
-                st.markdown(
-                    f"""<div class='chat-message bot-message'><strong>Solution:</strong><br>{solution}</div>""",
-                    unsafe_allow_html=True
-                )
+    if submitted and problem_desc.strip():
+        with st.spinner("🔄 Analyzing problem and generating smart solutions..."):
+            # Include category in the problem description if selected
+            enhanced_problem = problem_desc.strip()
+            if problem_category != "General":
+                enhanced_problem = f"[{problem_category}] {enhanced_problem}"
+            
+            # Fixed payload to match your API
+            payload = {
+                "query": enhanced_problem  # Changed from "problem" to "query"
+            }
+            
+            response = make_api_request(f"{api_url}/solve", payload)  # Using /solve endpoint
+            
+            if isinstance(response, tuple):  # Error case
+                display_error(response[1])
+            elif response and response.status_code == 200:
+                try:
+                    result = response.json()
+                    
+                    # Extract data according to your API response structure
+                    is_related = result.get("is_smart_city_related", False)
+                    category = result.get("category", "Unknown")
+                    confidence = result.get("confidence_score", 0.0)
+                    steps = result.get("steps", [])
+                    original_solutions = result.get("original_solutions", [])
+                    
+                    if not is_related:
+                        st.warning("⚠️ The query doesn't seem to be related to smart city problems.")
+                    else:
+                        st.markdown('<div class="success-message">✅ Smart city solution generated!</div>', unsafe_allow_html=True)
+                        
+                        # Display category and confidence
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.info(f"🎯 Problem Category: **{category}**")
+                        with col2:
+                            st.info(f"🎲 Confidence Score: **{confidence:.2f}**")
+                        
+                        # Display solution steps
+                        if steps:
+                            solution_text = "\n".join([f"• {step}" for step in steps])
+                            display_response(solution_text, "🏙️ Smart City Solution Steps")
+                        
+                        # Display original solutions if available
+                        if original_solutions:
+                            st.markdown("### 📚 Related Solutions Found:")
+                            for i, sol in enumerate(original_solutions[:3], 1):  # Show top 3
+                                with st.expander(f"Solution {i}: {sol.get('title', 'Untitled')}"):
+                                    st.write(sol.get('content', 'No content available'))
+                    
+                    # Display category and confidence
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.info(f"🎯 Problem Category: **{category}**")
+                    with col2:
+                        st.info(f"🎲 Confidence Score: **{confidence:.2f}**")
+                    
+                    # Display solution steps
+                    if steps:
+                        solution_text = "\n".join([f"• {step}" for step in steps])
+                        display_response(solution_text, "🏙️ Smart City Solution Steps")
+                    
+                    # Display original solutions if available
+                    if original_solutions:
+                        st.markdown("### 📚 Related Solutions Found:")
+                        for i, sol in enumerate(original_solutions[:3], 1):  # Show top 3
+                            with st.expander(f"Solution {i}: {sol.get('title', 'Untitled')}"):
+                                st.write(sol.get('content', 'No content available'))
+                    
+                except Exception as e:
+                    display_error(f"Failed to parse response: {str(e)}")
             else:
-                st.error(f"❌ Error {res.status_code}: {res.text}")
-        except Exception as e:  # noqa: E722
-            st.error(f"🔌 Failed to connect to City Problem Solver API.\n\n{str(e)}")
+                error_msg = f"API returned status {response.status_code}"
+                if response:
+                    try:
+                        error_detail = response.json().get("detail", response.text)
+                        error_msg = f"{error_msg}: {error_detail}"
+                    except:
+                        error_msg = f"{error_msg}: {response.text}"
+                display_error(error_msg)
+    elif submitted:
+        st.warning("⚠️ Please describe a city problem to get smart solutions.")
 
 # ---------------- Feature 4: Dream City Generator (Friend's API) ---------------- #
 elif selected_feature_key == "feature_4":
@@ -294,8 +473,6 @@ elif selected_feature_key == "feature_4":
     st.markdown("<p style='text-align:center; color:#81C784; font-style:italic;'>Powered by Innovation & Sustainability AI</p>", unsafe_allow_html=True)
     
     api_url = FASTAPI_CONFIGS.get("feature_4")
-
-    # Show connection status specifically for friend's API
     st.info(f"🔗 Connecting to friend's API at: {api_url}")
 
     with st.form("dream_city_form"):
@@ -314,58 +491,52 @@ elif selected_feature_key == "feature_4":
         
         submitted = st.form_submit_button("🌆 Generate Dream City Plan")
 
-    if submitted and dream_desc:
-        try:
-            with st.spinner("🏗️ Designing your dream city with sustainable innovation..."):
-                # Enhanced payload for the friend's API
-                payload = {
-                    "description": dream_desc,
-                    "city_size": city_size,
-                    "focus_area": focus_area,
-                    "temperature": temperature,
-                    "max_tokens": max_tokens,
-                    "app_name": "Avenir",
-                    "theme": "sustainability_innovation"
-                }
-                
-                res = requests.post(
-                    f"{api_url}/dream",
-                    json=payload,
-                    timeout=30  # Increased timeout for complex generation
-                )
-                
-            if res.status_code == 200:
-                response_data = res.json()
-                dream_output = response_data.get("city_plan", "No plan returned.")
-                
-                st.success("🎉 Your dream city plan has been generated!")
-                
-                # Enhanced display with sections
-                st.markdown("### 🏗️ Your Sustainable City Vision")
-                st.markdown(
-                    f"""<div class='chat-message bot-message'>
-                    <strong>🌟 City Plan for "{city_size}" with "{focus_area}" Focus:</strong><br><br>
-                    {dream_output}
-                    </div>""",
-                    unsafe_allow_html=True
-                )
-                
-                # Add some additional context
-                st.markdown("---")
-                st.markdown("### 💡 Next Steps")
-                st.info("Your city plan incorporates cutting-edge sustainability principles and innovative urban design. Consider sharing this vision with urban planners and community leaders!")
-                
-            else:
-                st.error(f"❌ API Error {res.status_code}: {res.text}")
+    if submitted and dream_desc.strip():
+        with st.spinner("🏗️ Designing your dream city with sustainable innovation..."):
+            payload = {
+                "description": dream_desc.strip(),
+                "city_size": city_size,
+                "focus_area": focus_area,
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+                "app_name": "Avenir",
+                "theme": "sustainability_innovation"
+            }
+            
+            response = make_api_request(f"{api_url}/dream", payload, timeout=30)
+            
+            if isinstance(response, tuple):  # Error case
+                display_error(response[1])
                 st.warning("💡 Make sure your friend's Dream City Generator API is running and accessible.")
-                
-        except requests.exceptions.Timeout:
-            st.error("⏱️ Request timed out. The Dream City Generator might be processing complex requests.")
-        except requests.exceptions.ConnectionError:
-            st.error(f"🔌 Failed to connect to Dream City Generator API at {api_url}")
-            st.warning("Please verify that your friend's API is running and the IP address is correct.")
-        except Exception as e:
-            st.error(f"🔧 Unexpected error: {str(e)}")
+            elif response and response.status_code == 200:
+                try:
+                    result = response.json()
+                    city_plan = result.get("city_plan", "No plan returned.")
+                    
+                    st.markdown('<div class="success-message">🎉 Your dream city plan has been generated!</div>', unsafe_allow_html=True)
+                    
+                    # Enhanced display with sections
+                    st.markdown("### 🏗️ Your Sustainable City Vision")
+                    display_response(city_plan, f"🌟 {city_size} City Plan with {focus_area} Focus")
+                    
+                    # Add some additional context
+                    st.markdown("---")
+                    st.markdown("### 💡 Next Steps")
+                    st.info("Your city plan incorporates cutting-edge sustainability principles and innovative urban design. Consider sharing this vision with urban planners and community leaders!")
+                    
+                except Exception as e:
+                    display_error(f"Failed to parse response: {str(e)}")
+            else:
+                error_msg = f"API returned status {response.status_code}"
+                if response:
+                    try:
+                        error_detail = response.json().get("detail", response.text)
+                        error_msg = f"{error_msg}: {error_detail}"
+                    except:
+                        error_msg = f"{error_msg}: {response.text}"
+                display_error(error_msg)
+    elif submitted:
+        st.warning("⚠️ Please describe your dream city to generate a plan.")
 
 # ---------------- Fallback Chat for unsupported selections ---------------- #
 else:
@@ -376,6 +547,7 @@ else:
         unsafe_allow_html=True
     )
 
+    # Display chat history
     for msg in st.session_state.messages:
         css_class = "user-message" if msg["role"] == "user" else "bot-message"
         st.markdown(
@@ -387,24 +559,35 @@ else:
         user_input = st.text_area("Ask something...")
         submitted = st.form_submit_button("Send 🚀")
 
-    if submitted and user_input:
+    if submitted and user_input.strip():
         st.session_state.messages.append({"role": "user", "content": user_input})
-        try:
-            with st.spinner("Getting response..."):
-                res = requests.post(
-                    f"{api_url}/chat",
-                    json={
-                        "query": user_input,
-                        "temperature": temperature,
-                        "max_tokens": max_tokens
-                    },
-                    timeout=20
-                )
-            if res.status_code == 200:
-                bot_reply = res.json().get("response", "No response.")
-                st.session_state.messages.append({"role": "assistant", "content": bot_reply})
-                st.rerun()
+        
+        with st.spinner("🔄 Getting response..."):
+            payload = {
+                "query": user_input.strip(),
+                "temperature": temperature,
+                "max_tokens": max_tokens
+            }
+            
+            response = make_api_request(f"{api_url}/chat", payload)
+            
+            if isinstance(response, tuple):  # Error case
+                bot_reply = f"Sorry, I encountered an error: {response[1]}"
+            elif response and response.status_code == 200:
+                try:
+                    result = response.json()
+                    bot_reply = result.get("response", "No response received.")
+                except Exception as e:
+                    bot_reply = f"Failed to parse response: {str(e)}"
             else:
-                st.error(f"❌ Error {res.status_code}: {res.text}")
-        except Exception as e:
-            st.error(f"🔌 Failed to connect to {st.session_state.selected_feature_label} API.\n\n{str(e)}")
+                bot_reply = f"API error: {response.status_code if response else 'No response'}"
+            
+            st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+            st.rerun()
+
+# ---------------- Footer ---------------- #
+st.markdown("---")
+st.markdown(
+    "<div style='text-align:center; color:#81C784; margin-top:50px;'>🌿 Avenir - Building Sustainable Cities for Tomorrow 🌿</div>",
+    unsafe_allow_html=True
+)
